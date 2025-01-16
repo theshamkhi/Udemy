@@ -1,0 +1,50 @@
+CREATE DATABASE Udemy;
+USE Udemy;
+
+CREATE TABLE Users (
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    Username VARCHAR(50) NOT NULL UNIQUE,
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    PasswordHash VARCHAR(255) NOT NULL,
+    Role ENUM('Admin', 'Teacher', 'Student') NOT NULL
+);
+
+CREATE TABLE Categories (
+    CatID INT AUTO_INCREMENT PRIMARY KEY,
+    CatName VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE Courses (
+    CourseID INT AUTO_INCREMENT PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    Description TEXT NOT NULL,
+    Content TEXT,
+    TeacherID INT NOT NULL,
+    CatID INT NOT NULL,
+    MediaURL VARCHAR(255),
+    FOREIGN KEY (TeacherID) REFERENCES Users(UserID),
+    FOREIGN KEY (CatID) REFERENCES Categories(CatID)
+);
+
+
+CREATE TABLE Tags (
+    TagID INT AUTO_INCREMENT PRIMARY KEY,
+    TagName VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE CourseTags (
+    CourseID INT NOT NULL,
+    TagID INT NOT NULL,
+    PRIMARY KEY (CourseID, TagID),
+    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID),
+    FOREIGN KEY (TagID) REFERENCES Tags(TagID)
+);
+
+CREATE TABLE Enrollments (
+    EnrollmentID INT AUTO_INCREMENT PRIMARY KEY,
+    CourseID INT NOT NULL,
+    StudentID INT NOT NULL,
+    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID),
+    FOREIGN KEY (StudentID) REFERENCES Users(UserID)
+);
