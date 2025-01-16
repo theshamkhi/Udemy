@@ -16,7 +16,7 @@ $user = new Student();
 
 $student = $user->getUser();
 
-
+$courses = $user->getDashboard();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,6 +82,48 @@ $student = $user->getUser();
    </div>
 </aside>
 
+<!-- Main -->
+<div class="flex-1 ml-0 sm:ml-80 p-8">
+    <div class="flex justify-between sm:px-12 lg:px-24 my-16">
+      <form method="GET" action="" class="flex items-center space-x-4">
+          <select id="category" name="category" onchange="this.form.submit()" class="block w-full max-w-sm px-4 py-2 text-sm border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
+              <option value="" class="text-gray-500">All Categories</option>
+              <!-- <?php foreach ($categories as $category): ?>
+                  <option 
+                      value="<?php echo $category['CatID']; ?>" 
+                      <?php echo (isset($_GET['category']) && $_GET['category'] == $category['CatID']) ? 'selected' : ''; ?>>
+                      <?php echo htmlspecialchars($category['Name']); ?>
+                  </option>
+              <?php endforeach; ?> -->
+          </select>
+      </form>
+      <form method="GET" action="" class="w-80 flex items-center space-x-4">
+          <input id="search" name="search" value="<?php echo htmlspecialchars($searchTerm); ?>" onchange="this.form.submit()" class="block w-full max-w-sm px-4 py-2 text-sm border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Search articles..." />
+      </form>
+    </div>
+
+    <div class="grid grid-cols-1 sm:px-12 lg:px-24 gap-8" style="align-items: start;">
+      <?php foreach ($courses as $course): ?>
+        <article class="overflow-hidden shadow transition hover:shadow-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+          <img src="<?php echo htmlspecialchars($course['MediaURL']); ?>" alt="Course Image" class="h-56 w-full object-cover"/>
+          <div class="bg-white p-4 sm:p-6">
+              <a href="#">
+                  <h3 class="mt-0.5 text-2xl text-gray-900">
+                      <?php echo htmlspecialchars($course['Title']); ?>
+                  </h3>
+              </a>
+                <h3 class="mt-2 text-gray-900">
+                    <?php echo htmlspecialchars($course['Description']); ?>
+                </h3>
+              <hr class="mt-3">
+              <p class="mt-2 text-sm text-gray-500 break-words">
+                  <?php echo htmlspecialchars($course['Content']); ?>
+              </p>
+          </div>
+        </article>
+      <?php endforeach; ?>
+    </div>
+</div>
 
 <footer class="bg-gray-100 sm:ml-80">
   <div class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
