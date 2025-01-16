@@ -1,10 +1,10 @@
 <?php
-class DbConnection{
+class DbConnection {
  
     private $host = 'localhost';
     private $username = 'root';
     private $password = '';
-    private $database = 'udemy';
+    private $database = 'Udemy';
    
     protected $connection;
    
