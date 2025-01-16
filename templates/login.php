@@ -5,6 +5,8 @@ require_once '../models/teacher.php';
 require_once '../models/student.php';
 require_once '../models/admin.php';
 
+$user = new User();
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     session_start();
@@ -16,9 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Both fields are required.";
     } else {
         try {
-            $dbc = new DbConnection();
-
-            if (User::login($dbc, $username, $password)) {
+            if ($user->login($username, $password)) {
                 switch ($_SESSION['role']) {
                     case 'Student':
                         header('Location: studentDashboard.php');
