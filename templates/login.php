@@ -1,8 +1,10 @@
 <?php
+require_once '../config/db.php';
 require_once '../models/user.php';
-require_once '../models/author.php';
+require_once '../models/teacher.php';
+require_once '../models/student.php';
 require_once '../models/admin.php';
-require_once '../models/reader.php';
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     session_start();
@@ -10,35 +12,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $user = new User();
-    $loggedInUser = $user->login($username, $password);
-
-    if ($loggedInUser) {
-        $_SESSION['user_id'] = $loggedInUser->getUserID();
-        $_SESSION['username'] = $loggedInUser->getUsername();
-        $_SESSION['role'] = $loggedInUser->getRole();
-
-        switch ($_SESSION['role']) {
-            case 'Reader':
-                header('Location: readerDashboard.php');
-                break;
-            case 'Author':
-                header('Location: authorDashboard.php');
-                break;
-            case 'Admin':
-                header('Location: adminDashboard.php');
-                break;
-            default:
-                echo "Invalid role.";
-        }
-        exit();
+    if (empty($username) || empty($password)) {
+        echo "Both fields are required.";
     } else {
-        header('Location: login.php?error=invalid');
-        exit();
+        try {
+            $dbc = new DbConnection();
+
+            if (User::login($dbc, $username, $password)) {
+                switch ($_SESSION['role']) {
+                    case 'Student':
+                        header('Location: studentDashboard.php');
+                        break;
+                    case 'Teacher':
+                        header('Location: teacherDashboard.php');
+                        break;
+                    case 'Admin':
+                        header('Location: adminDashboard.php');
+                        break;
+                    default:
+                        echo "Invalid role.";
+                }
+                exit();
+            } else {
+                echo "Invalid username or password.";
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
     }
 }
-?>
 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
