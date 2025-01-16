@@ -5,7 +5,7 @@ require_once 'user.php';
 
 class Teacher extends User {
     public function __construct() {
-        
+        parent::__construct();
     }
 
     public function addCourse() {
