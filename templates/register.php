@@ -5,6 +5,7 @@ require_once '../models/teacher.php';
 require_once '../models/student.php';
 require_once '../models/admin.php';
 
+$user = new User();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'] ?? '';
@@ -17,8 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "All fields are required.";
     } else {
         try {
-            $dbc = new DbConnection();
-            if (User::register($dbc, $name, $username, $email, $password, $role)) {
+            if ($user->register($name, $username, $email, $password, $role)) {
                 header('Location: login.php');
                 exit();
             } else {
