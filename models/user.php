@@ -54,20 +54,16 @@ class User {
             return false;
         }
     }
-    public function logout() {
-        session_start();
-        session_unset();
-        session_destroy();
-    }
-
     public function getDashboard() {
-        return [
-            'userID' => $this->userID,
-            'name' => $this->name,
-            'email' => $this->email,
-            'role' => $this->role,
-            'message' => 'Welcome to your dashboard!'
-        ];
+        try {
+            $query = "SELECT * FROM courses";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return [];
+        }
     }
     public function getUser() {
     
