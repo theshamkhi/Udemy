@@ -1,25 +1,32 @@
 <?php
-require_once '../models/user.php';
-require_once '../models/author.php';
-require_once '../models/admin.php';
-require_once '../models/reader.php';
 require_once '../config/db.php';
+require_once '../models/user.php';
+require_once '../models/teacher.php';
+require_once '../models/student.php';
+require_once '../models/admin.php';
 
-$new = new Reader();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $photo = $_POST['photo'];
-    $password = $_POST['password'];
-    $name = $_POST['name'];
-    $role = $_POST['role'];
+    $name = $_POST['name'] ?? '';
+    $username = $_POST['username'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $role = $_POST['role'] ?? '';
 
-    try {
-        $new->register($name, $photo, $username, $password, $role);
-        header('Location: login.php');
-        exit();
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
+    if (empty($name) || empty($username) || empty($email) || empty($password) || empty($role)) {
+        echo "All fields are required.";
+    } else {
+        try {
+            $dbc = new DbConnection();
+            if (User::register($dbc, $name, $username, $email, $password, $role)) {
+                header('Location: login.php');
+                exit();
+            } else {
+                echo "Failed to register user.";
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
     }
 }
 ?>
@@ -63,10 +70,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="text" name="name" placeholder="Name" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
                     </div>
 
-                    <!-- PhotoURL -->
+                    <!-- Email -->
                     <div class="relative">
-                        <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Photo</p>
-                        <input type="text" name="photo" placeholder="Paste URL Here" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+                        <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Email</p>
+                        <input type="email" name="email" placeholder="theshamkhi@gmail.com" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
                     </div>
 
                     <!-- Username -->
@@ -79,8 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Role</p>
                         <select name="role" id="role" class="border focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md">
-                            <option value="Reader" class="text-gray-400">Reader</option>
-                            <option value="Author" class="text-gray-400">Author</option>
+                            <option value="teacher" class="text-gray-400">Teacher</option>
+                            <option value="student" class="text-gray-400">Student</option>
                         </select>
                     </div>
 
