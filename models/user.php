@@ -73,6 +73,52 @@ class User {
         $stmt->execute([':userID' => $userID]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public function getBySearch($searchTerm) {
+        try {
+            $sql = "SELECT *
+                    FROM courses
+                    WHERE (Title LIKE :searchTerm OR Description LIKE :searchTerm OR Content LIKE :searchTerm)";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->execute([':searchTerm' => "%$searchTerm%"]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return [];
+        }
+    }
+    public function getByCat($categoryID = null) {
+        try {
+            $query = "SELECT categories.CatName, courses.*
+                      FROM courses
+                      JOIN categories ON categories.CatID = courses.CatID";
+            if ($categoryID) {
+                $query .= " WHERE courses.CatID = :categoryID";
+            }
+            $stmt = $this->connection->prepare($query);
+            if ($categoryID) {
+                $stmt->execute([':categoryID' => $categoryID]);
+            } else {
+                $stmt->execute();
+            }
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return [];
+        }
+    }
+    public function getCats() {
+        try {
+            $query = "SELECT * FROM categories";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return [];
+        }
+    }
+    
     
 }
 
