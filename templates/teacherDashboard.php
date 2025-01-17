@@ -15,6 +15,18 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role
 $user = new Teacher();
 
 $teacher = $user->getUser();
+
+$categories = $user->getCats();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $title = $_POST['title'];
+  $description = $_POST['description'];
+  $media = $_POST['media'];
+  $content = $_POST['content'];
+  $category = $_POST['category'];
+
+  $user->addCourse($title, $description, $media, $content, $category);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,6 +91,48 @@ $teacher = $user->getUser();
         </ul>
    </div>
 </aside>
+
+
+<!-- Main -->
+<section class="p-8 sm:ml-80">
+  <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 gap-x-16 gap-y-8 lg:grid-cols-5">
+      <div class="lg:col-span-2">
+        <h1 class="font-bold text-6xl text-pink-600 mb-8">Submit Your Article and Share Your Creative Insights</h1>
+        <p class="max-w-xl text-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+          At the same time, the fact that we are wholly owned and totally independent from
+          manufacturer and other group control gives you confidence that we will only recommend what
+          is right for you.
+        </p>
+      </div>
+
+      <div class="rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+        <form method="POST" class="space-y-4">
+          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Title" type="text" id="title" name="title"/></div>
+          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Description" type="text" id="description" name="description"/></div>
+          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Media URL" type="text" id="media" name="media"/></div>
+          <div>
+            <select name="category" id="category" class="w-full rounded-lg border-gray-200 p-3 text-sm">
+              <?php foreach ($categories as $category): ?>
+                  <option value="<?= $category['CatID'] ?>">
+                      <?= $category['CatName'] ?>
+                  </option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div>
+            <textarea class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Write Your Content Here ..." rows="6" id="content" name="content"></textarea>
+          </div>
+          <div class="flex items-center justify-center mt-4">
+            <button type="submit" class="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto">
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
 
 
 <footer class="bg-gray-100 sm:ml-80">
