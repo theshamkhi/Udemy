@@ -17,6 +17,14 @@ $user = new Student();
 $student = $user->getUser();
 
 $courses = $user->getDashboard();
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (isset($_POST['course_id'])) {
+    $courseID = $_POST['course_id'];
+    $user->joinCourse($courseID);
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,25 +113,33 @@ $courses = $user->getDashboard();
     <div class="grid grid-cols-1 sm:px-12 lg:px-24 gap-8" style="align-items: start;">
       <?php foreach ($courses as $course): ?>
         <article class="overflow-hidden shadow transition hover:shadow-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-          <img src="<?php echo htmlspecialchars($course['MediaURL']); ?>" alt="Course Image" class="h-56 w-full object-cover"/>
+          <img src="<?php echo $course['MediaURL']; ?>" alt="Course Image" class="h-56 w-full object-cover"/>
           <div class="bg-white p-4 sm:p-6">
               <a href="#">
                   <h3 class="mt-0.5 text-2xl text-gray-900">
-                      <?php echo htmlspecialchars($course['Title']); ?>
+                      <?php echo $course['Title']; ?>
                   </h3>
               </a>
                 <h3 class="mt-2 text-gray-900">
-                    <?php echo htmlspecialchars($course['Description']); ?>
+                    <?php echo $course['Description']; ?>
                 </h3>
               <hr class="mt-3">
               <p class="mt-2 text-sm text-gray-500 break-words">
-                  <?php echo htmlspecialchars($course['Content']); ?>
+                  <?php echo $course['Content']; ?>
               </p>
+              <form method="POST" class="mt-2 flex space-x-2">
+                <input type="hidden" name="course_id" value="<?php echo $course['CourseID']; ?>">
+                <div class="flex items-center justify-center">
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 mt-4">Enroll Now</button>
+                </div>
+              </form>
           </div>
         </article>
       <?php endforeach; ?>
     </div>
+
 </div>
+
 
 <footer class="bg-gray-100 sm:ml-80">
   <div class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
