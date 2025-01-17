@@ -25,7 +25,20 @@ class Student extends User {
 
     }
     public function getMyCourses() {
-
+        try {
+            $studentID = $_SESSION['user_id'];
+            $query = "SELECT courses.*, enrollments.StudentID
+                    FROM enrollments
+                    JOIN courses ON courses.CourseID = enrollments.CourseID
+                    WHERE enrollments.StudentID = :studentID";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute([':studentID' => $studentID]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return "Failed to enroll: " . $e->getMessage();
+        }
     }
 }
 ?>
