@@ -30,6 +30,14 @@ if ($selectedCategory) {
 } else {
     $courses = $user->getDashboard();
 }
+
+if (isset($_POST['action']) && $_POST['action'] === 'deleteCourse') {
+    $CourseID = $_POST['courseID'];
+    $user->deleteCourse($CourseID);
+
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -117,8 +125,22 @@ if ($selectedCategory) {
 
     <div class="grid grid-cols-1 sm:px-12 grid-cols-2 lg:px-24 grid-cols-2 gap-6" style="align-items: start;">
       <?php foreach ($courses as $course): ?>
-        <article class="overflow-hidden shadow transition hover:shadow-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+        <article class="relative overflow-hidden shadow transition hover:shadow-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+            <!-- Image Section -->
             <img src="<?php echo $course['MediaURL']; ?>" alt="Course Image" class="h-56 w-full object-cover"/>
+
+            <!-- Button Container -->
+            <div class="absolute top-4 right-4">
+                <form method="POST" onsubmit="return confirm('Are you sure you want to delete this course?');">
+                    <input type="hidden" name="action" value="deleteCourse">
+                    <input type="hidden" name="courseID" value="<?php echo $course['CourseID']; ?>">
+                    <button type="submit" class="bg-white text-white p-2 rounded-full">
+                        🗑️
+                    </button>
+                </form>
+            </div>
+
+            <!-- Content Section -->
             <div class="bg-white p-4 sm:p-6">
                 <a href="#">
                     <h3 class="text-2xl font-medium text-gray-900">
@@ -129,11 +151,10 @@ if ($selectedCategory) {
                     <?php echo $course['Description']; ?>
                 </p>
                 <a href="courseDetails.php?id=<?php echo $course['CourseID']; ?>" class="group mt-4 inline-flex items-center gap-1 text-sm font-medium text-blue-600">
-                  Find out more
-
-                  <span aria-hidden="true" class="block transition-all group-hover:ms-0.5 rtl:rotate-180">
-                    &rarr;
-                  </span>
+                    Find out more
+                    <span aria-hidden="true" class="block transition-all group-hover:ms-0.5 rtl:rotate-180">
+                        &rarr;
+                    </span>
                 </a>
             </div>
         </article>
