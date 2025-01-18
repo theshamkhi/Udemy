@@ -36,7 +36,11 @@ class Student extends User {
         }
     }
     public function getCourseDetails($courseID) {
-        $query = "SELECT * FROM courses WHERE CourseID = ?";
+        $query = "SELECT users.Name, categories.CatName, courses.*
+                FROM courses
+                JOIN users ON users.UserID = courses.TeacherID
+                JOIN categories ON categories.CatID = courses.CatID
+                WHERE CourseID = ?";
         $stmt = $this->connection->prepare($query);
         $stmt->execute([$courseID]);
         
