@@ -28,14 +28,6 @@ if ($selectedCategory) {
 } else {
     $courses = $user->getDashboard();
 }
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  if (isset($_POST['course_id'])) {
-    $courseID = $_POST['course_id'];
-    $user->joinCourse($courseID);
-  }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -121,30 +113,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </form>
     </div>
 
-    <div class="grid grid-cols-1 sm:px-12 lg:px-24 gap-8" style="align-items: start;">
+    <div class="grid grid-cols-1 sm:px-12 grid-cols-2 lg:px-24 grid-cols-2 gap-6" style="align-items: start;">
       <?php foreach ($courses as $course): ?>
         <article class="overflow-hidden shadow transition hover:shadow-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-          <img src="<?php echo $course['MediaURL']; ?>" alt="Course Image" class="h-56 w-full object-cover"/>
-          <div class="bg-white p-4 sm:p-6">
-              <a href="#">
-                  <h3 class="mt-0.5 text-2xl text-gray-900">
-                      <?php echo $course['Title']; ?>
-                  </h3>
-              </a>
+            <img src="<?php echo $course['MediaURL']; ?>" alt="Course Image" class="h-56 w-full object-cover"/>
+            <div class="bg-white p-4 sm:p-6">
+                <a href="#">
+                    <h3 class="mt-0.5 text-2xl text-gray-900">
+                        <?php echo $course['Title']; ?>
+                    </h3>
+                </a>
                 <h3 class="mt-2 text-gray-900">
                     <?php echo $course['Description']; ?>
                 </h3>
-              <hr class="mt-3">
-              <p class="mt-2 text-sm text-gray-500 break-words">
-                  <?php echo $course['Content']; ?>
-              </p>
-              <form method="POST" class="mt-2 flex space-x-2">
-                <input type="hidden" name="course_id" value="<?php echo $course['CourseID']; ?>">
-                <div class="flex items-center justify-center">
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 mt-4">Enroll Now</button>
+                <div class="flex items-center justify-center mt-4">
+                <a href="courseDetails.php?id=<?php echo $course['CourseID']; ?>" class="bg-blue-600 text-white px-6 py-2 font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Read more
+                </a>
                 </div>
-              </form>
-          </div>
+            </div>
         </article>
       <?php endforeach; ?>
     </div>
