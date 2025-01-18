@@ -119,23 +119,24 @@ if ($selectedCategory) {
             <img src="<?php echo $course['MediaURL']; ?>" alt="Course Image" class="h-56 w-full object-cover"/>
             <div class="bg-white p-4 sm:p-6">
                 <a href="#">
-                    <h3 class="mt-0.5 text-2xl text-gray-900">
+                    <h3 class="text-2xl font-medium text-gray-900">
                         <?php echo $course['Title']; ?>
                     </h3>
                 </a>
-                <h3 class="mt-2 text-gray-900">
+                <p class="mt-2 line-clamp-3 text-sm/relaxed text-gray-500">
                     <?php echo $course['Description']; ?>
-                </h3>
-                <div class="flex items-center justify-center mt-4">
-                <a href="courseDetails.php?id=<?php echo $course['CourseID']; ?>" class="bg-blue-600 text-white px-6 py-2 font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Read more
+                </p>
+                <a href="courseDetails.php?id=<?php echo $course['CourseID']; ?>" class="group mt-4 inline-flex items-center gap-1 text-sm font-medium text-blue-600">
+                  Find out more
+
+                  <span aria-hidden="true" class="block transition-all group-hover:ms-0.5 rtl:rotate-180">
+                    &rarr;
+                  </span>
                 </a>
-                </div>
             </div>
         </article>
       <?php endforeach; ?>
     </div>
-
 </div>
 
 

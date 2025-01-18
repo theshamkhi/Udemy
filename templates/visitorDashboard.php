@@ -101,33 +101,30 @@ if ($selectedCategory) {
       </form>
     </div>
 
-    <div class="grid grid-cols-1 sm:px-12 lg:px-24 gap-8" style="align-items: start;">
+    <div class="grid grid-cols-1 sm:px-12 grid-cols-2 lg:px-24 grid-cols-2 gap-6" style="align-items: start;">
       <?php foreach ($courses as $course): ?>
         <article class="overflow-hidden shadow transition hover:shadow-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-          <img src="<?php echo $course['MediaURL']; ?>" alt="Course Image" class="h-56 w-full object-cover"/>
-          <div class="bg-white p-4 sm:p-6">
-              <a href="#">
-                  <h3 class="mt-0.5 text-2xl text-gray-900">
-                      <?php echo $course['Title']; ?>
-                  </h3>
-              </a>
-                <h3 class="mt-2 text-gray-900">
+            <img src="<?php echo $course['MediaURL']; ?>" alt="Course Image" class="h-56 w-full object-cover"/>
+            <div class="bg-white p-4 sm:p-6">
+                <a href="#">
+                    <h3 class="text-2xl font-medium text-gray-900">
+                        <?php echo $course['Title']; ?>
+                    </h3>
+                </a>
+                <p class="mt-2 line-clamp-3 text-sm/relaxed text-gray-500">
                     <?php echo $course['Description']; ?>
-                </h3>
-              <hr class="mt-3">
-              <p class="mt-2 text-sm text-gray-500 break-words">
-                  <?php echo $course['Content']; ?>
-              </p>
-              <form action="login.php" class="mt-2 flex space-x-2">
-                <div class="flex items-center justify-center">
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 mt-4">Enroll Now</button>
-                </div>
-              </form>
-          </div>
+                </p>
+                <a href="courseDetails.php?id=<?php echo $course['CourseID']; ?>" class="group mt-4 inline-flex items-center gap-1 text-sm font-medium text-blue-600">
+                  Find out more
+
+                  <span aria-hidden="true" class="block transition-all group-hover:ms-0.5 rtl:rotate-180">
+                    &rarr;
+                  </span>
+                </a>
+            </div>
         </article>
       <?php endforeach; ?>
     </div>
-
 </div>
 
 
