@@ -21,6 +21,20 @@ class Student extends User {
             return "Failed to enroll: " . $e->getMessage();
         }
     }
+    public function leaveCourse($courseID) {
+        try {
+            $studentID = $_SESSION['user_id'];
+            $query = "DELETE FROM Enrollments 
+                      WHERE CourseID = :courseID AND StudentID = :studentID";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute([':courseID' => $courseID, ':studentID' => $studentID]);
+            header("Location: ../templates/myCourses.php");
+    
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return "Failed to enroll: " . $e->getMessage();
+        }
+    }
     public function getCourseDetails() {
 
     }
