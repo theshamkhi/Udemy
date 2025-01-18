@@ -16,7 +16,18 @@ $user = new Student();
 
 $student = $user->getUser();
 
-$courses = $user->getDashboard();
+$selectedCategory = $_GET['category'] ?? null;
+$searchTerm = $_GET['search'] ?? null;
+
+$categories = $user->getCats();
+
+if ($selectedCategory) {
+    $courses = $user->getByCat($selectedCategory);
+} elseif ($searchTerm) {
+    $courses = $user->getBySearch($searchTerm);
+} else {
+    $courses = $user->getDashboard();
+}
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -96,13 +107,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <form method="GET" action="" class="flex items-center space-x-4">
           <select id="category" name="category" onchange="this.form.submit()" class="block w-full max-w-sm px-4 py-2 text-sm border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
               <option value="" class="text-gray-500">All Categories</option>
-              <!-- <?php foreach ($categories as $category): ?>
+              <?php foreach ($categories as $category): ?>
                   <option 
                       value="<?php echo $category['CatID']; ?>" 
                       <?php echo (isset($_GET['category']) && $_GET['category'] == $category['CatID']) ? 'selected' : ''; ?>>
-                      <?php echo htmlspecialchars($category['Name']); ?>
+                      <?php echo $category['CatName']; ?>
                   </option>
-              <?php endforeach; ?> -->
+              <?php endforeach; ?>
           </select>
       </form>
       <form method="GET" action="" class="w-80 flex items-center space-x-4">
