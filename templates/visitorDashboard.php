@@ -7,7 +7,7 @@ require_once '../models/admin.php';
 require_once '../models/visitor.php';
 
 
-$user = new Visitor();
+$user = new User();
 
 $selectedCategory = $_GET['category'] ?? null;
 $searchTerm = $_GET['search'] ?? null;
