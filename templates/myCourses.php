@@ -19,12 +19,12 @@ $student = $user->getUser();
 $courses = $user->getMyCourses();
 
 
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//   if (isset($_POST['course_id'])) {
-//     $courseID = $_POST['course_id'];
-//     $user->joinCourse($courseID);
-//   }
-// }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (isset($_POST['course_id'])) {
+    $courseID = $_POST['course_id'];
+    $user->leaveCourse($courseID);
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -127,6 +127,12 @@ $courses = $user->getMyCourses();
               <p class="mt-2 text-sm text-gray-500 break-words">
                   <?php echo $course['Content']; ?>
               </p>
+              <form method="POST" class="mt-2 flex space-x-2">
+                <input type="hidden" name="course_id" value="<?php echo $course['CourseID']; ?>">
+                <div class="flex items-center justify-center">
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 mt-4">Cancel Enrollment</button>
+                </div>
+              </form>
           </div>
         </article>
       <?php endforeach; ?>
