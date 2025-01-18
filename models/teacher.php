@@ -47,8 +47,21 @@ class Teacher extends User {
     public function modifyCourse() {
 
     }
-    public function deleteCourse() {
-
+    public function deleteCourse($CourseID) {
+        try {
+            $teacherID = $_SESSION['user_id'];
+            $query = "DELETE FROM courses WHERE CourseID = :courseID AND TeacherID = :teacherID";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute([
+                ':courseID' => $CourseID,
+                ':teacherID' => $teacherID
+            ]);
+        
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            error_log($e->getMessage());
+            return false;
+        }
     }
 
     public function getStats() {
