@@ -24,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_POST['course_id'])) {
       $courseID = $_POST['course_id'];
       $user->joinCourse($courseID);
+      header("Location: myCourses.php");
   }
 }
 ?>
