@@ -35,8 +35,12 @@ class Student extends User {
             return "Failed to enroll: " . $e->getMessage();
         }
     }
-    public function getCourseDetails() {
-
+    public function getCourseDetails($courseID) {
+        $query = "SELECT * FROM courses WHERE CourseID = ?";
+        $stmt = $this->connection->prepare($query);
+        $stmt->execute([$courseID]);
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     public function getMyCourses() {
         try {
