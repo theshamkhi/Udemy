@@ -30,6 +30,20 @@ class Teacher extends User {
         }
 
     }
+    public function getMyCourses() {
+        try {
+            $teacherID = $_SESSION['user_id'];
+            $query = "SELECT * FROM courses
+                    WHERE TeacherID = :teacherID";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute([':teacherID' => $teacherID]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return "Failure :" . $e->getMessage();
+        }
+    }
     public function modifyCourse() {
 
     }
