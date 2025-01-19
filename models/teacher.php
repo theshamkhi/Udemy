@@ -8,9 +8,10 @@ class Teacher extends User {
         parent::__construct();
     }
 
-    public function addCourse($title, $description, $media, $content, $category) {
+    public function addCourse($title, $description, $media, $content, $category, $tags) {
         try {
             $teacherID = $_SESSION['user_id'];
+    
             $query = "INSERT INTO courses (Title, Description, Content, TeacherID, CatID, MediaURL) 
                       VALUES (:title, :description, :content, :teacherID, :catID, :mediaURL)";
             $stmt = $this->connection->prepare($query);
@@ -24,12 +25,27 @@ class Teacher extends User {
                 ':mediaURL' => $media
             ]);
     
+            // Get the last inserted CourseID
+            $courseID = $this->connection->lastInsertId();
+    
+            if (!empty($tags)) {
+                $tagQuery = "INSERT INTO CourseTags (CourseID, TagID) VALUES (:courseID, :tagID)";
+                $tagStmt = $this->connection->prepare($tagQuery);
+    
+                foreach ($tags as $tagID) {
+                    $tagStmt->execute([
+                        ':courseID' => $courseID,
+                        ':tagID' => $tagID
+                    ]);
+                }
+            }
+    
+            return "Course successfully created!";
         } catch (PDOException $e) {
             error_log($e->getMessage());
             return "Failed to create course: " . $e->getMessage();
         }
-
-    }
+    }    
     public function getMyCourses() {
         try {
             $teacherID = $_SESSION['user_id'];
@@ -56,13 +72,12 @@ class Teacher extends User {
                 ':courseID' => $CourseID,
                 ':teacherID' => $teacherID
             ]);
-        
+    
         } catch (PDOException $e) {
-            $this->connection->rollBack();
             error_log($e->getMessage());
             return false;
         }
-    }
+    }    
 
     public function getStats() {
 
