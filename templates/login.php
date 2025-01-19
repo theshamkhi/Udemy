@@ -33,8 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         echo "Invalid role.";
                 }
                 exit();
-            } else {
-                echo "Invalid username or password.";
             }
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
