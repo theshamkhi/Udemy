@@ -18,25 +18,12 @@ $teacher = $user->getUser();
 
 $courses = $user->getMyCourses();
 
-$selectedCategory = $_GET['category'] ?? null;
-$searchTerm = $_GET['search'] ?? null;
-
-$categories = $user->getCats();
-
-if ($selectedCategory) {
-    $courses = $user->getByCat($selectedCategory);
-} elseif ($searchTerm) {
-    $courses = $user->getBySearch($searchTerm);
-} else {
-    $courses = $user->getDashboard();
-}
-
 if (isset($_POST['action']) && $_POST['action'] === 'deleteCourse') {
-    $CourseID = $_POST['courseID'];
-    $user->deleteCourse($CourseID);
+  $CourseID = $_POST['courseID'];
+  $user->deleteCourse($CourseID);
 
-    header("Location: " . $_SERVER['HTTP_REFERER']);
-    exit;
+  header("Location: " . $_SERVER['HTTP_REFERER']);
+  exit;
 }
 ?>
 <!DOCTYPE html>
@@ -88,7 +75,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'deleteCourse') {
                 <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 17 20">
                     <path d="M7.958 19.393a7.7 7.7 0 0 1-6.715-3.439c-2.868-4.832 0-9.376.944-10.654l.091-.122a3.286 3.286 0 0 0 .765-3.288A1 1 0 0 1 4.6.8c.133.1.313.212.525.347A10.451 10.451 0 0 1 10.6 9.3c.5-1.06.772-2.213.8-3.385a1 1 0 0 1 1.592-.758c1.636 1.205 4.638 6.081 2.019 10.441a8.177 8.177 0 0 1-7.053 3.795Z"/>
                 </svg>
-            <span class="ms-3">My courses</span>
+            <span class="ms-3">Courses</span>
             </a>
             </li>
             <li>
@@ -103,26 +90,19 @@ if (isset($_POST['action']) && $_POST['action'] === 'deleteCourse') {
    </div>
 </aside>
 
+
+<div class="mx-auto max-w-screen-xl px-4 py-16 ml-0 sm:ml-80 p-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-lg text-center">
+    <h1 class="text-3xl font-bold sm:text-6xl">Courses</h1>
+
+    <p class="mt-4 text-gray-500">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero nulla eaque error neque
+      ipsa culpa autem, at itaque nostrum!
+    </p>
+  </div>
+</div>
 <!-- Main -->
 <div class="flex-1 ml-0 sm:ml-80 p-8">
-    <div class="flex justify-between sm:px-12 lg:px-24 my-16">
-      <form method="GET" action="" class="flex items-center space-x-4">
-          <select id="category" name="category" onchange="this.form.submit()" class="block w-full max-w-sm px-4 py-2 text-sm border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
-              <option value="" class="text-gray-500">All Categories</option>
-              <?php foreach ($categories as $category): ?>
-                  <option 
-                      value="<?php echo $category['CatID']; ?>" 
-                      <?php echo (isset($_GET['category']) && $_GET['category'] == $category['CatID']) ? 'selected' : ''; ?>>
-                      <?php echo $category['CatName']; ?>
-                  </option>
-              <?php endforeach; ?>
-          </select>
-      </form>
-      <form method="GET" action="" class="w-80 flex items-center space-x-4">
-          <input id="search" name="search" value="<?php echo htmlspecialchars($searchTerm); ?>" onchange="this.form.submit()" class="block w-full max-w-sm px-4 py-2 text-sm border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Search articles..." />
-      </form>
-    </div>
-
     <div class="grid grid-cols-1 sm:px-12 grid-cols-2 lg:px-24 grid-cols-2 gap-6" style="align-items: start;">
       <?php foreach ($courses as $course): ?>
         <article class="relative overflow-hidden shadow transition hover:shadow-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
