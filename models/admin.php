@@ -74,6 +74,50 @@ class Admin extends User {
             return "Failed to create category: " . $e->getMessage();
         }
     }
+    public function TotalCourses(){
+        try {
+            $query = "SELECT COUNT(*) AS TotalCourses FROM courses";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return null;
+        }
+    }
+    public function TotalCoursesByCat() {
+        try {
+            $query = "SELECT categories.CatName, COUNT(*) AS TotalCourses
+                    FROM courses
+                    JOIN categories ON categories.CatID = courses.CatID
+                    GROUP BY courses.CatID";
+            $stmt = $this->connection->query($query);
+    
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return null;
+        }
+    }
+    public function getCourseWithMostStudents() {
+        try {
+            $query = "SELECT courses.Title, COUNT(enrollments.StudentID) AS StudentCount
+                    FROM courses
+                    JOIN enrollments ON courses.CourseID = enrollments.CourseID
+                    GROUP BY courses.CourseID
+                    ORDER BY StudentCount DESC
+                    LIMIT 1";
+            $stmt = $this->connection->query($query);
+    
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return null;
+        }
+    }
+    
+    
 }
 ?>
 
