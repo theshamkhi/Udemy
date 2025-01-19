@@ -58,10 +58,10 @@ if ($selectedCategory) {
 
 <aside id="default-sidebar" class="fixed top-0 left-0 z-40 w-80 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
     <div class="h-full overflow-y-auto bg-black">
-    <div class="flex flex-col space-y-2">
+    <div class="flex flex-col space-y-2 mb-8">
         <img src="https://website-cdn.studysmarter.de/2022/12/Udemy-1536x864.png" alt="Photo" class="object-cover">
         <div class="px-3 pt-4">
-            <h2 class="text-xl font-semibold text-white text-center uppercase mb-4"><?php echo $student['Name']; ?></h2>
+            <h2 class="text-xl font-semibold text-white text-center"><?php echo $student['Name']; ?></h2>
         </div>
     </div>
     <ul class="space-y-2 font-medium px-3 pb-4">
