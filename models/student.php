@@ -36,16 +36,37 @@ class Student extends User {
         }
     }
     public function getCourseDetails($courseID) {
-        $query = "SELECT users.Name, categories.CatName, courses.*
-                FROM courses
-                JOIN users ON users.UserID = courses.TeacherID
-                JOIN categories ON categories.CatID = courses.CatID
-                WHERE CourseID = ?";
-        $stmt = $this->connection->prepare($query);
-        $stmt->execute([$courseID]);
-        
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
+        try {
+            $query = "SELECT users.Name, categories.CatName, courses.*, tags.TagName
+                    FROM courses
+                    JOIN users ON users.UserID = courses.TeacherID
+                    JOIN categories ON categories.CatID = courses.CatID
+                    LEFT JOIN CourseTags ON CourseTags.CourseID = courses.CourseID
+                    LEFT JOIN tags ON tags.TagID = CourseTags.TagID
+                    WHERE courses.CourseID = :courseID";
+            
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute([':courseID' => $courseID]);
+            
+            $tags = [];
+    
+            $course = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                if ($row['TagName']) {
+                    $tags[] = $row['TagName'];
+                }
+            }
+    
+            $course['Tags'] = $tags;
+    
+            return $course;
+    
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return "Failed to fetch course details: " . $e->getMessage();
+        }
+    }    
     public function getMyCourses() {
         try {
             $studentID = $_SESSION['user_id'];
