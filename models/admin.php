@@ -8,8 +8,26 @@ class Admin extends User {
         parent::__construct();
     }
 
-    public function validateTeacherAccount() {
+    public function manageAccounts($userID, $newStatus) {
+        try {
+            $query = "UPDATE users SET Status = :status WHERE UserID = :userID";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute([':status' => $newStatus, ':userID' => $userID]);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+        }
+    }
+    public function getAccounts(){
+        try {
+            $query = "SELECT * FROM users WHERE Role != 'Admin'";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute();
 
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return [];
+        }
     }
 
     public function createCat($name) {
