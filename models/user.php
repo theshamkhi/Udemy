@@ -16,11 +16,14 @@ class User {
         $this->connection = $db->getConnection();
     }
 
-    public function register($name, $username, $email, $password, $role) {
+    public static function register($name, $username, $email, $password, $role) {
         try {
+            $db = new DbConnection();
+            $connection = $db->getConnection();
+
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
             $query = "INSERT INTO users (Name, Username, Email, PasswordHash, Role) VALUES (:name, :username, :email, :password, :role)";
-            $stmt = $this->connection->prepare($query);
+            $stmt = $connection->prepare($query);
             $stmt->execute([
                 ':name' => $name,
                 ':username' => $username,
@@ -34,6 +37,7 @@ class User {
             return false;
         }
     }
+
     public function login($username, $password) {
         try {
             $query = "SELECT * FROM users WHERE Username = :username";
