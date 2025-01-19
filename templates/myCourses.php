@@ -55,10 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <aside id="default-sidebar" class="fixed top-0 left-0 z-40 w-80 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
     <div class="h-full overflow-y-auto bg-black">
-    <div class="flex flex-col space-y-2">
+    <div class="flex flex-col space-y-2 mb-8">
         <img src="https://website-cdn.studysmarter.de/2022/12/Udemy-1536x864.png" alt="Photo" class="object-cover">
         <div class="px-3 pt-4">
-            <h2 class="text-xl font-semibold text-white text-center uppercase mb-4"><?php echo $student['Name']; ?></h2>
+            <h2 class="text-xl font-semibold text-white text-center"><?php echo $student['Name']; ?></h2>
         </div>
     </div>
     <ul class="space-y-2 font-medium px-3 pb-4">
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 17 20">
                       <path d="M7.958 19.393a7.7 7.7 0 0 1-6.715-3.439c-2.868-4.832 0-9.376.944-10.654l.091-.122a3.286 3.286 0 0 0 .765-3.288A1 1 0 0 1 4.6.8c.133.1.313.212.525.347A10.451 10.451 0 0 1 10.6 9.3c.5-1.06.772-2.213.8-3.385a1 1 0 0 1 1.592-.758c1.636 1.205 4.638 6.081 2.019 10.441a8.177 8.177 0 0 1-7.053 3.795Z"/>
                   </svg>
-              <span class="ms-3">Courses</span>
+              <span class="ms-3">My courses</span>
               </a>
             </li>
             <li>
@@ -90,50 +90,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    </div>
 </aside>
 
+<div class="mx-auto max-w-screen-xl px-4 py-16 ml-0 sm:ml-80 p-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-lg text-center">
+    <h1 class="text-3xl font-bold sm:text-6xl">My Enrollments</h1>
+
+    <p class="mt-4 text-gray-500">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero nulla eaque error neque
+      ipsa culpa autem, at itaque nostrum!
+    </p>
+  </div>
+</div>
 <!-- Main -->
 <div class="flex-1 ml-0 sm:ml-80 p-8">
-    <div class="flex justify-between sm:px-12 lg:px-24 my-16">
-      <form method="GET" action="" class="flex items-center space-x-4">
-          <select id="category" name="category" onchange="this.form.submit()" class="block w-full max-w-sm px-4 py-2 text-sm border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500">
-              <option value="" class="text-gray-500">All Categories</option>
-              <!-- <?php foreach ($categories as $category): ?>
-                  <option 
-                      value="<?php echo $category['CatID']; ?>" 
-                      <?php echo (isset($_GET['category']) && $_GET['category'] == $category['CatID']) ? 'selected' : ''; ?>>
-                      <?php echo htmlspecialchars($category['Name']); ?>
-                  </option>
-              <?php endforeach; ?> -->
-          </select>
-      </form>
-      <form method="GET" action="" class="w-80 flex items-center space-x-4">
-          <input id="search" name="search" value="<?php echo htmlspecialchars($searchTerm); ?>" onchange="this.form.submit()" class="block w-full max-w-sm px-4 py-2 text-sm border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Search articles..." />
-      </form>
-    </div>
-
-    <div class="grid grid-cols-1 sm:px-12 lg:px-24 gap-8" style="align-items: start;">
+    <div class="grid grid-cols-1 sm:px-12 grid-cols-2 lg:px-24 grid-cols-2 gap-6" style="align-items: start;">
       <?php foreach ($courses as $course): ?>
         <article class="overflow-hidden shadow transition hover:shadow-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-          <img src="<?php echo $course['MediaURL']; ?>" alt="Course Image" class="h-56 w-full object-cover"/>
-          <div class="bg-white p-4 sm:p-6">
-              <a href="#">
-                  <h3 class="mt-0.5 text-2xl text-gray-900">
-                      <?php echo $course['Title']; ?>
-                  </h3>
-              </a>
-                <h3 class="mt-2 text-gray-900">
+            <img src="<?php echo $course['MediaURL']; ?>" alt="Course Image" class="h-56 w-full object-cover"/>
+            <div class="bg-white p-4 sm:p-6">
+                <a href="#">
+                    <h3 class="text-2xl font-medium text-gray-900">
+                        <?php echo $course['Title']; ?>
+                    </h3>
+                </a>
+                <p class="mt-2 line-clamp-3 text-sm/relaxed text-gray-500">
                     <?php echo $course['Description']; ?>
-                </h3>
-              <hr class="mt-3">
-              <p class="mt-2 text-sm text-gray-500 break-words">
-                  <?php echo $course['Content']; ?>
-              </p>
-              <form method="POST" class="mt-2 flex space-x-2">
-                <input type="hidden" name="course_id" value="<?php echo $course['CourseID']; ?>">
-                <div class="flex items-center justify-center">
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 mt-4">Cancel Enrollment</button>
-                </div>
+                </p>
+                <a href="courseDetails.php?id=<?php echo $course['CourseID']; ?>" class="group mt-1 inline-flex items-center gap-1 text-sm font-medium text-blue-600">
+                  Find out more
+
+                  <span aria-hidden="true" class="block transition-all group-hover:ms-0.5 rtl:rotate-180">
+                    &rarr;
+                  </span>
+                </a>
+                <form method="POST" class="mt-4">
+                  <input type="hidden" name="course_id" value="<?php echo $course['CourseID']; ?>">
+                  <div class="flex items-center justify-center">
+                      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow-lg transition">Cancel Enrollment</button>
+                  </div>
               </form>
-          </div>
+            </div>
         </article>
       <?php endforeach; ?>
     </div>
