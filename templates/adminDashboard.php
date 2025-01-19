@@ -17,10 +17,23 @@ $user = new Admin();
 $admin = $user->getUser();
 
 $categories = $user->getCats();
+$tags = $user->getTags();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['category'])) {
   $name = $_POST['category'];
   $user->createCat($name);
+  header("Location: adminDashboard.php");
+  exit;
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete') {
+  $catID = $_POST['cat_id'];
+  $user->deleteCat($catID);
+  header("Location: adminDashboard.php");
+  exit;
+}
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tag'])) {
+  $name = $_POST['tag'];
+  $user->createTag($name);
   header("Location: adminDashboard.php");
   exit;
 }
@@ -139,6 +152,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['category'])) {
             </div>
         </article>
       <?php endforeach; ?>
+    </div>
+</div>
+
+<!-- Tags -->
+<div class="mx-auto max-w-screen-xl px-4 py-16 ml-0 sm:ml-80 p-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-lg text-center">
+    <h1 class="text-3xl font-bold sm:text-4xl">Add New Tags!</h1>
+
+    <p class="mt-4 text-gray-500">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero nulla eaque error neque
+      ipsa culpa autem, at itaque nostrum!
+    </p>
+  </div>
+
+  <form method="POST" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
+    <div class="relative">
+      <input type="text" name="tag" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm" placeholder="Enter Tag Name"/>
+    </div>
+    <div class="flex items-center justify-center">
+      <button type="submit" class="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white">Add</button>
+    </div>
+  </form>
+</div>
+<div class="flex-1 ml-0 sm:ml-80 p-8">
+    <h1 class="text-5xl font-semibold text-gray-800 mb-10">Tags</h1>
+    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+        <?php foreach ($tags as $tag): ?>
+            <span class="bg-gradient-to-r from-blue-500 to-blue-700 text-white text-sm px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out transform hover:-translate-y-1 cursor-pointer">
+                <?php echo $tag['TagName']; ?>
+            </span>
+        <?php endforeach; ?>
     </div>
 </div>
 
