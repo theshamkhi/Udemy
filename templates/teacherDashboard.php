@@ -17,6 +17,7 @@ $user = new Teacher();
 $teacher = $user->getUser();
 
 $categories = $user->getCats();
+$tags = $user->getTags();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $title = $_POST['title'];
@@ -24,9 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $media = $_POST['media'];
   $content = $_POST['content'];
   $category = $_POST['category'];
+  $tags = $_POST['tags'];
 
-  $user->addCourse($title, $description, $media, $content, $category);
+  $user->addCourse($title, $description, $media, $content, $category, $tags);
+  header("Location: teacherCourses.php");
+  exit;
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,9 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- AOS Animation CDN -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <!-- AJAX -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
 </head>
 <body class="bg-gray-100">
 
@@ -56,11 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </button>
 
 <aside id="default-sidebar" class="fixed top-0 left-0 z-40 w-80 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-    <div class="h-full overflow-y-auto bg-black">
-    <div class="flex flex-col space-y-2">
+  <div class="h-full overflow-y-auto bg-black">
+    <div class="flex flex-col space-y-2 mb-8">
         <img src="https://website-cdn.studysmarter.de/2022/12/Udemy-1536x864.png" alt="Photo" class="object-cover">
         <div class="px-3 pt-4">
-            <h2 class="text-xl font-semibold text-white text-center uppercase mb-4"><?php echo $teacher['Name']; ?></h2>
+            <h2 class="text-xl font-semibold text-white text-center"><?php echo $teacher['Name']; ?></h2>
         </div>
     </div>
     <ul class="space-y-2 font-medium px-3 pb-4">
@@ -89,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </a>
         </li>
     </ul>
-   </div>
+  </div>
 </aside>
 
 
@@ -108,28 +117,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <div class="rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
         <form method="POST" class="space-y-4">
-          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Title" type="text" id="title" name="title"/></div>
-          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Description" type="text" id="description" name="description"/></div>
-          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Media URL" type="text" id="media" name="media"/></div>
+          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Title" type="text" id="title" name="title" value="<?= isset($title) ? htmlspecialchars($title) : '' ?>"/></div>
+          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Description" type="text" id="description" name="description" value="<?= isset($description) ? htmlspecialchars($description) : '' ?>"/></div>
+          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Media URL" type="text" id="media" name="media" value="<?= isset($media) ? htmlspecialchars($media) : '' ?>"/></div>
           <div>
             <select name="category" id="category" class="w-full rounded-lg border-gray-200 p-3 text-sm">
               <?php foreach ($categories as $category): ?>
-                  <option value="<?= $category['CatID'] ?>">
-                      <?= $category['CatName'] ?>
-                  </option>
+                <option value="<?= $category['CatID'] ?>" <?= isset($category) && $category == $category['CatID'] ? 'selected' : '' ?>>
+                  <?= $category['CatName'] ?>
+                </option>
               <?php endforeach; ?>
             </select>
           </div>
           <div>
-            <textarea class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Write Your Content Here ..." rows="6" id="content" name="content"></textarea>
+            <select name="tags[]" id="tags" class="w-full rounded-lg border-gray-200 p-3 text-sm" multiple>
+              <?php foreach ($tags as $tag): ?>
+                <option value="<?= $tag['TagID'] ?>" <?= isset($tags) && in_array($tag['TagID'], $tags) ? 'selected' : '' ?>>
+                  <?= $tag['TagName'] ?>
+                </option>
+              <?php endforeach; ?>
+            </select>
           </div>
-          <div class="flex items-center justify-center mt-4">
-            <button type="submit" class="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto">
-              Save
-            </button>
+          <div>
+            <textarea class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Write Your Content Here ..." rows="4" id="content" name="content"><?= isset($content) ? htmlspecialchars($content) : '' ?></textarea>
+          </div>
+          <div class="flex items-center justify-center">
+            <button type="submit" class="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto">Save</button>
           </div>
         </form>
       </div>
+    
     </div>
   </div>
 </section>
@@ -266,6 +283,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script>
   AOS.init();
+</script>
+
+<!-- Initialize Select2 -->
+<script>
+  $(document).ready(function() {
+    $('#tags').select2({
+      placeholder: 'Select tags',
+      allowClear: true, // Allows clearing the selected tags
+      width: '100%' // Make sure it fits within the form width
+    });
+  });
 </script>
 
 </body>
