@@ -7,7 +7,8 @@ CREATE TABLE Users (
     Username VARCHAR(50) NOT NULL UNIQUE,
     Email VARCHAR(100) NOT NULL UNIQUE,
     PasswordHash VARCHAR(255) NOT NULL,
-    Role ENUM('Admin', 'Teacher', 'Student') NOT NULL
+    Role ENUM('Admin', 'Teacher', 'Student') NOT NULL,
+    Status ENUM('Pending', 'Activated', 'Suspended') DEFAULT 'Pending'
 );
 
 CREATE TABLE Categories (
