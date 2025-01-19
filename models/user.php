@@ -20,9 +20,9 @@ class User {
         try {
             $db = new DbConnection();
             $connection = $db->getConnection();
-
+    
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            $query = "INSERT INTO users (Name, Username, Email, PasswordHash, Role) VALUES (:name, :username, :email, :password, :role)";
+            $query = "INSERT INTO users (Name, Username, Email, PasswordHash, Role, Status) VALUES (:name, :username, :email, :password, :role, 'Pending')";
             $stmt = $connection->prepare($query);
             $stmt->execute([
                 ':name' => $name,
@@ -36,7 +36,7 @@ class User {
             error_log($e->getMessage());
             return false;
         }
-    }
+    }    
 
     public function login($username, $password) {
         try {
@@ -44,20 +44,31 @@ class User {
             $stmt = $this->connection->prepare($query);
             $stmt->execute([':username' => $username]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($user && password_verify($password, $user['PasswordHash'])) {
-                $_SESSION['user_id'] = $user['UserID'];
-                $_SESSION['username'] = $user['Username'];
-                $_SESSION['role'] = $user['Role'];
-                return true;
-            } else {
-                return false;
+    
+            if (!$user || !password_verify($password, $user['PasswordHash'])) {
+                throw new Exception("Invalid username or password.");
             }
+    
+            if ($user['Status'] !== 'Activated') {
+                if ($user['Status'] === 'Pending') {
+                    throw new Exception("Account is awaiting approval by the admin.");
+                } elseif ($user['Status'] === 'Suspended') {
+                    throw new Exception("Account has been suspended. Please contact support.");
+                }
+            }
+    
+            $_SESSION['user_id'] = $user['UserID'];
+            $_SESSION['username'] = $user['Username'];
+            $_SESSION['role'] = $user['Role'];
+            return true;
+    
         } catch (PDOException $e) {
             error_log($e->getMessage());
-            return false;
+            throw new Exception("An error occurred. Please try again later.");
         }
     }
+    
+    
     public function getDashboard() {
         try {
             $query = "SELECT * FROM courses";
