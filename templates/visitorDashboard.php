@@ -4,7 +4,6 @@ require_once '../models/user.php';
 require_once '../models/teacher.php';
 require_once '../models/student.php';
 require_once '../models/admin.php';
-require_once '../models/visitor.php';
 
 
 $user = new User();

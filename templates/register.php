@@ -45,19 +45,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body style="margin: 0;
             padding: 0;
-            background-image: url('../assets/theatre.jpg');
+            background-image: url('https://www.brighthorizons.com/resources/-/media/bh-new/baw-blog/laptop-from-above-800x533.ashx');
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;">
 
-<div class="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mt-14 mr-auto mb-0 ml-auto max-w-7xl xl:px-5 lg:flex-row">
-    <div class="flex flex-col items-center w-full pt-5 pr-10 pb-20 pl-10 lg:pt-20 lg:flex-row">
+<div class="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mt-28 mr-auto mb-0 ml-auto max-w-7xl xl:px-5 lg:flex-row">
+    <div class="flex flex-col items-center w-full pt-5 pr-10 pb-20 pl-10 lg:pt-12 lg:flex-row">
         <div class="w-full bg-cover relative max-w-md lg:max-w-2xl lg:w-7/12">
             <div class="flex flex-col items-center justify-center w-full h-full relative lg:pr-10" data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-duration="800">
-                <h1 class="text-8xl text-white italic font-bold" style="text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.75);">
-                    “Art is never finished, only abandoned.”
+                <h1 class="text-7xl text-white italic font-bold" style="text-shadow: 8px 8px 12px rgba(0, 0, 0, 0.75);">
+                    “Learning never exhausts the mind.”
                 </h1>
-                <p class="text-4xl text-white" style="text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.75);">~Leonardo da Vinci</p>
+                <p class="text-4xl text-white" style="text-shadow: 8px 8px 12px rgba(0, 0, 0, 0.75);">~Leonardo da Vinci</p>
             </div>
         </div>
         <div class="w-full mt-20 mr-0 mb-0 ml-0 relative z-10 max-w-2xl lg:mt-0 lg:w-5/12">
@@ -86,8 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Role</p>
                         <select name="role" id="role" class="border focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md">
-                            <option value="teacher" class="text-gray-400">Teacher</option>
-                            <option value="student" class="text-gray-400">Student</option>
+                            <option value="teacher" class="text-gray-600">Teacher</option>
+                            <option value="student" class="text-gray-600">Student</option>
                         </select>
                     </div>
 
@@ -103,7 +103,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <div class="relative">
-                        <p class="text-center font-medium text-gray-600">Already have an account, <a href="login.php" class="text-green-600 font-bold">Login</a></p>
+                        <p class="text-center font-medium text-gray-600">Already have an account, 
+                            <a href="login.php" class="text-green-600 font-bold hover:underline">Login</a>
+                        </p>
+                        <p class="text-center font-medium text-gray-600">Go to 
+                            <a href="visitorDashboard.php" class="text-green-600 font-bold hover:underline">Home page</a>
+                        </p>
                     </div>
 
                 </form>
