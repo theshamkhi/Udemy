@@ -122,6 +122,18 @@ class User {
             return [];
         }
     }
+    public function getTags() {
+        try {
+            $query = "SELECT * FROM Tags";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return [];
+        }
+    }
     
     
 }
