@@ -108,11 +108,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 gap-x-16 gap-y-8 lg:grid-cols-5">
       <div class="lg:col-span-2">
-        <h1 class="font-bold text-6xl text-pink-600 mb-8">Submit Your Article and Share Your Creative Insights</h1>
-        <p class="max-w-xl text-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-          At the same time, the fact that we are wholly owned and totally independent from
-          manufacturer and other group control gives you confidence that we will only recommend what
-          is right for you.
+        <h1 class="font-bold text-6xl text-pink-600 mb-8">Publish Your Course and Inspire Lifelong Learners</h1>
+        <p class="max-w-xl text-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">Share your knowledge and expertise with a global audience.
+          By publishing your course, you empower students to achieve their goals while showcasing your unique teaching style.
+          Take this step toward becoming a trusted educator and making an impact on learners worldwide.
         </p>
       </div>
 

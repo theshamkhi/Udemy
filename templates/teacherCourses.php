@@ -106,10 +106,8 @@ if (isset($_POST['action']) && $_POST['action'] === 'deleteCourse') {
     <div class="grid grid-cols-1 sm:px-12 grid-cols-2 lg:px-24 grid-cols-2 gap-6" style="align-items: start;">
       <?php foreach ($courses as $course): ?>
         <article class="relative overflow-hidden shadow transition hover:shadow-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-            <!-- Image Section -->
             <img src="<?php echo $course['Photo']; ?>" alt="Course Image" class="h-56 w-full object-cover"/>
 
-            <!-- Button Container -->
             <div class="absolute top-4 right-4">
                 <form method="POST" onsubmit="return confirm('Are you sure you want to delete this course?');">
                     <input type="hidden" name="action" value="deleteCourse">
@@ -120,7 +118,6 @@ if (isset($_POST['action']) && $_POST['action'] === 'deleteCourse') {
                 </form>
             </div>
 
-            <!-- Content Section -->
             <div class="bg-white p-4 sm:p-6">
                 <a href="#">
                     <h3 class="text-2xl font-medium text-gray-900">
