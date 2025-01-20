@@ -96,7 +96,8 @@ class User {
         try {
             $sql = "SELECT *
                     FROM courses
-                    WHERE (Title LIKE :searchTerm OR Description LIKE :searchTerm OR Content LIKE :searchTerm)";
+                    WHERE (Title LIKE :searchTerm OR Description LIKE :searchTerm)
+                    AND status = 'Approved'";
             $stmt = $this->connection->prepare($sql);
             $stmt->execute([':searchTerm' => "%$searchTerm%"]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -109,9 +110,10 @@ class User {
         try {
             $query = "SELECT categories.CatName, courses.*
                       FROM courses
-                      JOIN categories ON categories.CatID = courses.CatID";
+                      JOIN categories ON categories.CatID = courses.CatID
+                      WHERE status = 'Approved'";
             if ($categoryID) {
-                $query .= " WHERE courses.CatID = :categoryID";
+                $query .= " AND courses.CatID = :categoryID";
             }
             $stmt = $this->connection->prepare($query);
             if ($categoryID) {
