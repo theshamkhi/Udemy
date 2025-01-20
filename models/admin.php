@@ -8,11 +8,25 @@ class Admin extends User {
         parent::__construct();
     }
 
-    public function manageAccounts($userID, $newStatus) {
+    public function manageAccounts($userID, $action) {
         try {
+            $status = ($action === 'activate') ? 'Activated' : 'Suspended';
             $query = "UPDATE users SET Status = :status WHERE UserID = :userID";
             $stmt = $this->connection->prepare($query);
-            $stmt->execute([':status' => $newStatus, ':userID' => $userID]);
+            $stmt->execute([':status' => $status, ':userID' => $userID]);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+        }
+    }
+    public function manageCourses($courseID, $action) {
+        try {
+            $status = $action === 'approve' ? 'Approved' : 'Declined';
+            $sql = "UPDATE Courses SET status = :status WHERE CourseID = :courseID";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->execute([
+                ':status' => $status,
+                ':courseID' => $courseID,
+            ]);
         } catch (PDOException $e) {
             error_log($e->getMessage());
         }
@@ -20,6 +34,18 @@ class Admin extends User {
     public function getAccounts(){
         try {
             $query = "SELECT * FROM users WHERE Role != 'Admin'";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return [];
+        }
+    }
+    public function getCourses(){
+        try {
+            $query = "SELECT * FROM courses";
             $stmt = $this->connection->prepare($query);
             $stmt->execute();
 
@@ -47,7 +73,7 @@ class Admin extends User {
     }
     public function deleteCat($catID) {
         try {
-            $query1 = "UPDATE Courses SET CatID = 5 WHERE CatID = :catID";
+            $query1 = "UPDATE Courses SET CatID = 1 WHERE CatID = :catID";
             $stmt1 = $this->connection->prepare($query1);
             $stmt1->execute([':catID' => $catID]);
     
