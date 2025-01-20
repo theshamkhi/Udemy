@@ -107,7 +107,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'deleteCourse') {
       <?php foreach ($courses as $course): ?>
         <article class="relative overflow-hidden shadow transition hover:shadow-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
             <!-- Image Section -->
-            <img src="<?php echo $course['MediaURL']; ?>" alt="Course Image" class="h-56 w-full object-cover"/>
+            <img src="<?php echo $course['Photo']; ?>" alt="Course Image" class="h-56 w-full object-cover"/>
 
             <!-- Button Container -->
             <div class="absolute top-4 right-4">

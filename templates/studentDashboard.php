@@ -116,7 +116,7 @@ if ($selectedCategory) {
     <div class="grid grid-cols-1 sm:px-12 grid-cols-2 lg:px-24 grid-cols-2 gap-6" style="align-items: start;">
       <?php foreach ($courses as $course): ?>
         <article class="overflow-hidden shadow transition hover:shadow-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-            <img src="<?php echo $course['MediaURL']; ?>" alt="Course Image" class="h-56 w-full object-cover"/>
+            <img src="<?php echo $course['Photo']; ?>" alt="Course Image" class="h-56 w-full object-cover"/>
             <div class="bg-white p-4 sm:p-6">
                 <a href="#">
                     <h3 class="text-2xl font-medium text-gray-900">

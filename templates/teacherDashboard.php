@@ -22,12 +22,13 @@ $tags = $user->getTags();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $title = $_POST['title'];
   $description = $_POST['description'];
-  $media = $_POST['media'];
+  $photo = $_POST['photo'];
   $content = $_POST['content'];
+  $contentType = $_POST['contentType'];
   $category = $_POST['category'];
   $tags = $_POST['tags'];
 
-  $user->addCourse($title, $description, $media, $content, $category, $tags);
+  $user->addCourse($title, $description, $photo, $contentType, $content, $category, $tags);
   header("Location: teacherCourses.php");
   exit;
 }
@@ -117,9 +118,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <div class="rounded-lg bg-white p-8 shadow-lg lg:col-span-3 lg:p-12" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
         <form method="POST" class="space-y-4">
-          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Title" type="text" id="title" name="title" value="<?= isset($title) ? htmlspecialchars($title) : '' ?>"/></div>
-          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Description" type="text" id="description" name="description" value="<?= isset($description) ? htmlspecialchars($description) : '' ?>"/></div>
-          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Media URL" type="text" id="media" name="media" value="<?= isset($media) ? htmlspecialchars($media) : '' ?>"/></div>
+          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Title" type="text" id="title" name="title"/></div>
+          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Photo URL" type="text" id="photo" name="photo"/></div>
+          <div><textarea class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Description" rows="4" type="text" id="description" name="description"></textarea></div>
+          <div>
+            <select name="contentType" id="contentType" class="w-full rounded-lg border-gray-200 p-3 text-sm">
+                <option value="Video">Video</option>
+                <option value="Document">Document</option>
+            </select>
+          </div>
+          <div><input class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Paste Your Content URL Here ..." type="text" id="content" name="content"/></div>
           <div>
             <select name="category" id="category" class="w-full rounded-lg border-gray-200 p-3 text-sm">
               <?php foreach ($categories as $category): ?>
@@ -137,9 +145,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </option>
               <?php endforeach; ?>
             </select>
-          </div>
-          <div>
-            <textarea class="w-full rounded-lg border-gray-200 p-3 text-sm" placeholder="Write Your Content Here ..." rows="4" id="content" name="content"><?= isset($content) ? htmlspecialchars($content) : '' ?></textarea>
           </div>
           <div class="flex items-center justify-center">
             <button type="submit" class="inline-block w-full rounded-lg bg-black px-5 py-3 font-medium text-white sm:w-auto">Save</button>
