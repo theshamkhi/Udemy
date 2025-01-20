@@ -63,13 +63,13 @@ class Teacher extends User {
     public function updateCourse() {
 
     }
-    public function deleteCourse($CourseID) {
+    public function deleteCourse($courseID) {
         try {
             $teacherID = $_SESSION['user_id'];
             $query = "DELETE FROM courses WHERE CourseID = :courseID AND TeacherID = :teacherID";
             $stmt = $this->connection->prepare($query);
             $stmt->execute([
-                ':courseID' => $CourseID,
+                ':courseID' => $courseID,
                 ':teacherID' => $teacherID
             ]);
     
@@ -82,8 +82,21 @@ class Teacher extends User {
     public function getStats() {
 
     }
-    public function getStudents(){
+    public function getCourseEnrollments($courseID){
+        try {
+            $query = "SELECT COUNT(*) AS TotalEnrollments
+            FROM enrollments
+            WHERE CourseID = :courseID";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute([
+                ':courseID' => $courseID,
+            ]);
 
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return null;
+        }
     }
 }
 ?>
