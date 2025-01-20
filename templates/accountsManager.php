@@ -18,14 +18,19 @@ $admin = $user->getUser();
 
 $accounts = $user->getAccounts();
 
+$courses = $user->getCourses();
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $userID = $_POST['user_id'];
-    $action = $_POST['action'];
-
-    $newStatus = $action === 'activate' ? 'Activated' : 'Suspended';
-
-    $user->manageAccounts($userID, $newStatus);
+    if (isset($_POST['userID'])) {
+        $userID = $_POST['userID'];
+        $action = $_POST['action'];
+        $user->manageAccounts($userID, $action);
+    } elseif (isset($_POST['courseID'])) {
+        $courseID = $_POST['courseID'];
+        $action = $_POST['action'];
+        $user->manageCourses($courseID, $action);
+    }
     header("Location: accountsManager.php");
     exit;
 }
@@ -131,13 +136,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <tr class="border-b hover:bg-gray-50">
                         <td class="px-6 py-4 font-semibold"><?php echo $account['Name'] . " (" . $account['Role'] . ")"; ?></td>
                         <td class="px-6 py-4 font-semibold"><?php echo $account['Email']; ?></td>
-                        <td class="px-6 py-4 font-semibold"><?php echo ucfirst($account['Status']); ?></td>
+                        <td class="px-6 py-4 font-semibold"><?php echo $account['Status']; ?></td>
                         <td class="px-6 py-4 font-semibold">
-                        <form method="POST" class="flex space-x-2">
-                            <input type="hidden" name="user_id" value="<?php echo $account['UserID']; ?>">
-                            <button name="action" value="activate" class="text-xl hover:scale-105">✅</button>
-                            <button name="action" value="suspend" class="text-xl hover:scale-105">❌</button>
-                        </form>
+                          <form method="POST" class="flex space-x-2">
+                              <input type="hidden" name="userID" value="<?php echo $account['UserID']; ?>">
+                              <button name="action" value="activate" class="text-xl hover:scale-105">✅</button>
+                              <button name="action" value="suspend" class="text-xl hover:scale-105">❌</button>
+                          </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mx-auto max-w-screen-xl px-4 py-16 ml-0 sm:ml-80 p-8 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-lg text-center">
+    <h1 class="text-3xl font-bold sm:text-4xl">Manage Courses</h1>
+
+    <p class="mt-4 text-gray-500">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Et libero nulla eaque error neque
+      ipsa culpa autem, at itaque nostrum!
+    </p>
+  </div>
+</div>
+
+<div class="flex-1 ml-0 sm:ml-80 p-8">
+    <div class="overflow-auto bg-white shadow-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+        <table class="min-w-full table-auto border-collapse text-sm">
+            <thead class="bg-black">
+                <tr>
+                    <th class="px-6 py-3 text-left font-medium text-white">Course</th>
+                    <th class="px-6 py-3 text-left font-medium text-white">Status</th>
+                    <th class="px-6 py-3 text-left font-medium text-white">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($courses as $course): ?>
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="px-6 py-4 font-semibold"><?php echo $course['Title']; ?></td>
+                        <td class="px-6 py-4 font-semibold"><?php echo $course['Status']; ?></td>
+                        <td class="px-6 py-4 font-semibold">
+                          <form method="POST" class="flex space-x-2">
+                              <input type="hidden" name="courseID" value="<?php echo $course['CourseID']; ?>">
+                              <button name="action" value="approve" class="text-xl hover:scale-105">✅</button>
+                              <button name="action" value="decline" class="text-xl hover:scale-105">❌</button>
+                          </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>
