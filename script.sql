@@ -20,10 +20,12 @@ CREATE TABLE Courses (
     CourseID INT AUTO_INCREMENT PRIMARY KEY,
     Title VARCHAR(255) NOT NULL,
     Description TEXT NOT NULL,
-    Content TEXT,
+    Photo VARCHAR(255),
+    MediaType ENUM('Video', 'Document') NOT NULL,
+    MediaURL VARCHAR(255) NOT NULL,
+    Status ENUM('Pending', 'Approved', 'Declined') DEFAULT 'Pending',
     TeacherID INT NOT NULL,
     CatID INT NOT NULL,
-    MediaURL VARCHAR(255),
     FOREIGN KEY (TeacherID) REFERENCES Users(UserID) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (CatID) REFERENCES Categories(CatID) ON DELETE CASCADE ON UPDATE CASCADE
 );
