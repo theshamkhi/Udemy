@@ -47,16 +47,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="icon" href="../assets/art.png"/>
+    <link rel="icon" href="../assets/udemy.png"/>
     <script src="https://cdn.tailwindcss.com"></script>
-
     <!-- AOS Animation CDN -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 <body style="margin: 0;
             padding: 0;
-            background-image: url('https://www.brighthorizons.com/resources/-/media/bh-new/baw-blog/laptop-from-above-800x533.ashx');
+            background-image: url('https://img.freepik.com/free-photo/still-life-books-versus-technology_23-2150063032.jpg?t=st=1737406436~exp=1737410036~hmac=02943d46d5a75984078b5d3da4b0483ebb67dc41dbab8ee1c94bbc6e7bc9f490&w=996');
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;">
