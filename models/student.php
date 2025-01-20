@@ -48,25 +48,29 @@ class Student extends User {
             $stmt = $this->connection->prepare($query);
             $stmt->execute([':courseID' => $courseID]);
             
+            $course = null;
             $tags = [];
-    
-            $course = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+            
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                if (!$course) {
+                    $course = $row;
+                }
                 if ($row['TagName']) {
                     $tags[] = $row['TagName'];
                 }
             }
-    
-            $course['Tags'] = $tags;
-    
+            
+            if ($course) {
+                $course['Tags'] = $tags;
+            }
+            
             return $course;
     
         } catch (PDOException $e) {
             error_log($e->getMessage());
             return "Failed to fetch course details: " . $e->getMessage();
         }
-    }    
+    }       
     public function getMyCourses() {
         try {
             $studentID = $_SESSION['user_id'];
