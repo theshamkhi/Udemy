@@ -71,7 +71,7 @@ class User {
     
     public function getDashboard() {
         try {
-            $query = "SELECT * FROM courses";
+            $query = "SELECT * FROM courses WHERE status = 'Approved'";
             $stmt = $this->connection->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -81,12 +81,16 @@ class User {
         }
     }
     public function getUser() {
-    
-        $userID = $_SESSION['user_id'];
-        $query = "SELECT * FROM Users WHERE UserID = :userID";
-        $stmt = $this->connection->prepare($query);
-        $stmt->execute([':userID' => $userID]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        try {
+            $userID = $_SESSION['user_id'];
+            $query = "SELECT * FROM users WHERE UserID = :userID";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute([':userID' => $userID]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return null;
+        }
     }
     public function getBySearch($searchTerm) {
         try {
