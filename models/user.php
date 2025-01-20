@@ -7,6 +7,7 @@ class User {
     protected $username;
     protected $role;
     protected $name;
+    protected $status;
     protected $email;
     protected $password;
     protected $connection;
