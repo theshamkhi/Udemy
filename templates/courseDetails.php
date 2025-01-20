@@ -139,7 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
 
         <div class="relative">
-            <img src="<?php echo $course['MediaURL']; ?>" alt="Course Image" class="h-64 w-full object-cover">
+            <img src="<?php echo $course['Photo']; ?>" alt="Course Image" class="h-64 w-full object-cover">
             <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center px-8 text-white">
                 <h1 class="text-3xl sm:text-5xl font-bold mb-4"><?php echo $course['Title']; ?></h1>
                 <p class="text-sm sm:text-base"><?php echo $course['Description']; ?></p>
@@ -214,8 +214,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="mb-6">
-                <h3 class="text-xl font-semibold mb-4">Course Overview</h3>
-                <p class="text-gray-600"><?php echo $course['Content']; ?></p>
+                <h3 class="text-xl font-semibold mb-4">Course (<?php echo $course['MediaType']; ?>)</h3>
+                <p class="text-gray-600"><?php echo $course['MediaURL']; ?></p>
             </div>
             <?php if ($_SESSION['role'] == 'Student'): ?>
               <div class="flex items-center justify-center space-x-2">
