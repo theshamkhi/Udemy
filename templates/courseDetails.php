@@ -24,11 +24,13 @@ $courseID = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 $course = $user->getCourseDetails($courseID);
 
+$cour = $user2->getCourseEnrollments($courseID);
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_POST['course_id'])) {
       $courseID = $_POST['course_id'];
       $user->joinCourse($courseID);
-      header("Location: myCourses.php");
+      header("Location: enrollments.php");
   }
 }
 ?>
@@ -212,6 +214,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   </li>
                 </ul>
             </div>
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold mb-4">Total Enrollment</h3>
+                <p class="text-gray-600"><?php echo $cour['TotalEnrollments']; ?> Students</p>
+            </div>
 
             <div class="mb-6">
                 <h3 class="text-xl font-semibold mb-4">Course (<?php echo $course['MediaType']; ?>)</h3>
@@ -230,8 +236,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </div>
-
-
 
 
 <footer class="bg-gray-100 sm:ml-80">
