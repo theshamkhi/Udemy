@@ -96,7 +96,7 @@ if ($selectedCategory) {
           </select>
       </form>
       <form method="GET" action="" class="w-80 flex items-center space-x-4">
-          <input id="search" name="search" value="<?php echo htmlspecialchars($searchTerm); ?>" onchange="this.form.submit()" class="block w-full max-w-sm px-4 py-2 text-sm border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Search articles..." />
+          <input id="search" name="search" value="<?php echo htmlspecialchars($searchTerm); ?>" onchange="this.form.submit()" class="block w-full max-w-sm px-4 py-2 text-sm border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Search courses..." />
       </form>
     </div>
 
