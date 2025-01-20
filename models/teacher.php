@@ -4,6 +4,7 @@ require_once 'user.php';
 
 
 class Teacher extends User {
+    
     public function __construct() {
         parent::__construct();
     }
@@ -79,9 +80,43 @@ class Teacher extends User {
         }
     }    
 
-    public function getStats() {
-
+    public function TotalCourses() {
+        try {
+            $teacherID = $_SESSION['user_id'];
+            $query = "SELECT COUNT(*) AS TotalCourses
+                      FROM courses
+                      WHERE TeacherID = :teacherID";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute([
+                ':teacherID' => $teacherID
+            ]);
+    
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return null;
+        }
     }
+    
+    public function EnrolledStudents() {
+        try {
+            $teacherID = $_SESSION['user_id'];
+            $query = "SELECT COUNT(enrollments.StudentID) AS EnrolledStudents
+                      FROM enrollments
+                      JOIN courses ON courses.CourseID = enrollments.CourseID
+                      WHERE courses.TeacherID = :teacherID";
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute([
+                ':teacherID' => $teacherID
+            ]);
+    
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return null;
+        }
+    }
+    
     public function getCourseEnrollments($courseID){
         try {
             $query = "SELECT COUNT(*) AS TotalEnrollments
