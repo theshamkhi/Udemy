@@ -8,24 +8,24 @@ class Teacher extends User {
         parent::__construct();
     }
 
-    public function addCourse($title, $description, $media, $content, $category, $tags) {
+    public function addCourse($title, $description, $photo, $contentType, $content, $category, $tags) {
         try {
             $teacherID = $_SESSION['user_id'];
     
-            $query = "INSERT INTO courses (Title, Description, Content, TeacherID, CatID, MediaURL) 
-                      VALUES (:title, :description, :content, :teacherID, :catID, :mediaURL)";
+            $query = "INSERT INTO courses (Title, Description, Photo, MediaType, MediaURL, Status, TeacherID, CatID) 
+                      VALUES (:title, :description, :photo, :contentType, :content, 'Pending', :teacherID, :catID)";
             $stmt = $this->connection->prepare($query);
     
             $stmt->execute([
                 ':title' => $title,
                 ':description' => $description,
+                ':photo' => $photo,
+                ':contentType' => $contentType,
                 ':content' => $content,
                 ':teacherID' => $teacherID,
                 ':catID' => $category,
-                ':mediaURL' => $media
             ]);
     
-            // Get the last inserted CourseID
             $courseID = $this->connection->lastInsertId();
     
             if (!empty($tags)) {
@@ -60,7 +60,7 @@ class Teacher extends User {
             return "Failure :" . $e->getMessage();
         }
     }
-    public function modifyCourse() {
+    public function updateCourse() {
 
     }
     public function deleteCourse($CourseID) {
