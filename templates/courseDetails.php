@@ -4,6 +4,8 @@ require_once '../models/user.php';
 require_once '../models/teacher.php';
 require_once '../models/student.php';
 require_once '../models/admin.php';
+require_once '../models/course.php';
+
 
 session_start();
 
@@ -227,7 +229,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="mb-6">
                 <h3 class="text-xl font-semibold mb-4">Course (<?php echo $course['MediaType']; ?>)</h3>
-                <p class="text-gray-600"><?php echo $course['MediaURL']; ?></p>
+                
+                <?php if ($course['MediaType'] == 'Video'): ?>
+                    <div>
+                        <?php
+                            $videoCourse = new VideoCourse($course['MediaURL']);
+                            echo $videoCourse->displayMedia();
+                        ?>
+                    </div>
+                <?php elseif ($course['MediaType'] == 'Document'): ?>
+                    <div>
+                        <?php
+                            $documentCourse = new DocumentCourse($course['MediaURL']);
+                            echo $documentCourse->displayMedia();
+                        ?>
+                    </div>
+                <?php else: ?>
+                    <p class="text-gray-600">No media available for this course.</p>
+                <?php endif; ?>
             </div>
             <?php if ($_SESSION['role'] == 'Student'): ?>
               <div class="flex items-center justify-center space-x-2">
