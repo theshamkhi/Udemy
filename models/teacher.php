@@ -73,7 +73,7 @@ class Teacher extends User {
                 ':courseID' => $courseID,
                 ':teacherID' => $teacherID
             ]);
-    
+            return $stmt->rowCount() > 0;
         } catch (PDOException $e) {
             error_log($e->getMessage());
             return false;

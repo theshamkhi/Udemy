@@ -50,12 +50,15 @@ class User {
                 throw new Exception("Invalid username or password.");
             }
     
-            if ($user['Status'] !== 'Activated') {
-                if ($user['Status'] === 'Pending') {
+            switch ($user['Status']) {
+                case 'Pending':
                     throw new Exception("Account is awaiting approval by the admin.");
-                } elseif ($user['Status'] === 'Suspended') {
-                    throw new Exception("Account has been suspended. Please contact support.");
-                }
+                case 'Suspended':
+                    throw new Exception("Account has been suspended.");
+                case 'Activated':
+                    break;
+                default:
+                    throw new Exception("Invalid account status.");
             }
     
             $_SESSION['user_id'] = $user['UserID'];
@@ -142,16 +145,16 @@ class User {
     }
     public function getTags() {
         try {
-            $query = "SELECT * FROM Tags";
+            $query = "SELECT * FROM tags";
             $stmt = $this->connection->prepare($query);
             $stmt->execute();
-
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log($e->getMessage());
             return [];
         }
     }
+    
     
     
 }

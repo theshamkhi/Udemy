@@ -20,7 +20,7 @@ class Admin extends User {
     }
     public function manageCourses($courseID, $action) {
         try {
-            $status = $action === 'approve' ? 'Approved' : 'Declined';
+            $status = ($action === 'approve') ? 'Approved' : 'Declined';
             $sql = "UPDATE Courses SET status = :status WHERE CourseID = :courseID";
             $stmt = $this->connection->prepare($sql);
             $stmt->execute([
@@ -114,10 +114,10 @@ class Admin extends User {
     }
     public function TotalCoursesByCat() {
         try {
-            $query = "SELECT categories.CatName, COUNT(*) AS TotalCourses
-                    FROM courses
-                    JOIN categories ON categories.CatID = courses.CatID
-                    GROUP BY courses.CatID";
+            $query = "SELECT categories.CatName, COUNT(courses.CourseID) AS TotalCourses
+                    FROM categories
+                    LEFT JOIN courses ON categories.CatID = courses.CatID
+                    GROUP BY categories.CatID";
             $stmt = $this->connection->query($query);
     
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
